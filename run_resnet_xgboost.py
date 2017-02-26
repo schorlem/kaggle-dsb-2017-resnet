@@ -1,10 +1,6 @@
 import numpy as np
 import pydicom
-import pandas as pd
 from models.resnet50 import ResNet50
-from keras.preprocessing import image
-from models.imagenet_utils import preprocess_input, decode_predictions
-import xgboost as xgb
 import os
 import cv2
 import keras.backend as K
@@ -12,12 +8,13 @@ from keras.models import Model
 
 K.set_image_dim_ordering('th')
 
-
 def get_3d_data(path):
     slices = [pydicom.read_file(path + '/' + s) for s in os.listdir(path)]
     slices.sort(key=lambda x: int(x.InstanceNumber))
     return np.stack([s.pixel_array for s in slices])
 
+def zero_centering(batch):
+    pass #TODO add zero centering for all three channels
 
 def get_data_id(path):
     sample_image = get_3d_data(path)
@@ -50,8 +47,14 @@ def get_data_id(path):
     batch = np.array(batch)
     return batch
 
-if __name__ == '__main__':
-    folder = "/home/andre/kaggle-dsb-2017/data/sample_images/0a0c32c9e08cc2ea76a71649de56be6d"
+
+def calc_features(input_path, output_path):
+    for folder in glob.glob(input_path+'*'): #TODO figure this function out
+        batch = get_data_id(folder)
+        feats = net.predict(batch)
+        print(feats.shape)
+        np.save(folder, feats)
+
     batch = get_data_id(folder)
 
     model = ResNet50(weights='imagenet')
@@ -59,19 +62,16 @@ if __name__ == '__main__':
 
     img = np.ndarray([1,3,224,224],dtype=np.float32)
     img[0] = batch[0]
-    x = preprocess_input(img)
+    x = img
     layer_name = 'avg_pool'
     intermediate_layer_model = Model(input=model.input,
                                      output=model.get_layer(layer_name).output)
     intermediate_output = intermediate_layer_model.predict(x)
     flat_output = intermediate_output.flatten()
-    print(flat_output, len(flat_output))
-    #print(flat_output)
-    #img_path = 'elephant.jpg'
-    #img = image.load_img(img_path, target_size=(224, 224))
-    #x = image.img_to_array(img)
-    #x = np.expand_dims(x, axis=0)
-    #x = preprocess_input(x)
 
-    preds = model.predict(x)
-    print('Predicted:', decode_predictions(preds))
+
+if __name__ == '__main__':
+    input_folder = "/home/andre/kaggle-dsb-2017/data/sample_images/"
+    output_folder = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
+    calc_features(input_folder, output_folder)
+
