@@ -58,8 +58,7 @@ def calc_features(input_path, output_path):
 
         img = np.ndarray([len(batch),3,224,224],dtype=np.float32)
         img = batch
-        intermediate_output = intermediate_layer_model.predict(img)
-        #print(output_basename, intermediate_output, intermediate_output.shape)
+        intermediate_output = intermediate_layer_model.predict(img, batch_size = 20)
         np.save(output_folder + "/features.np", intermediate_output) #TODO add overwrite flag or some other method to enable batch processing of inputs
 
 if __name__ == '__main__':
