@@ -49,17 +49,14 @@ def calc_features(input_path, output_path):
 
     for folder in glob(input_path+'*'):
         output_basename = os.path.basename(os.path.normpath(folder))
-        output_folder = output_path + output_basename
-        if not os.path.exists(output_folder): #TODO don't create new folder for each patient but add id to each filename
-            os.makedirs(output_folder)
+        output_name = output_path + output_basename + "_features"
 
         batch = get_data_id(folder)
-
 
         img = np.ndarray([len(batch),3,224,224],dtype=np.float32)
         img = batch
         intermediate_output = intermediate_layer_model.predict(img, batch_size = 20)
-        np.save(output_folder + "/features.np", intermediate_output) #TODO add overwrite flag or some other method to enable batch processing of inputs
+        np.save(output_name, intermediate_output) #TODO add overwrite flag or some other method to enable batch processing of inputs
 
 if __name__ == '__main__':
     input_directory = "/home/andre/kaggle-dsb-2017/data/sample_images/"
