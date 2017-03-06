@@ -54,7 +54,9 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
         output_basename = os.path.basename(os.path.normpath(folder))
         output_name = output_path + output_basename + "_features"
         if not overwrite and os.path.exists(output_name + ".npy"):
+            i += 1
             continue
+
 
         batch = get_data_id(folder)
 
