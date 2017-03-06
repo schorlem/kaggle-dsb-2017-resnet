@@ -42,24 +42,30 @@ def get_data_id(path):
     return batch
 
 
-def calc_features(input_path, output_path):
+def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
     model = ResNet50(weights='imagenet')
     layer_name = 'avg_pool'
     intermediate_layer_model = Model(input=model.input, output=model.get_layer(layer_name).output)
 
+    i = 0
     for folder in glob(input_path+'*'):
+        if i >= n_iterations:
+            break
         output_basename = os.path.basename(os.path.normpath(folder))
         output_name = output_path + output_basename + "_features"
+        if not overwrite and os.path.exists(output_name + ".npy"):
+            continue
 
         batch = get_data_id(folder)
 
         img = np.ndarray([len(batch),3,224,224],dtype=np.float32)
         img = batch
         intermediate_output = intermediate_layer_model.predict(img, batch_size = 20)
-        np.save(output_name, intermediate_output) #TODO add overwrite flag or some other method to enable batch processing of inputs
+        np.save(output_name, intermediate_output)
+        i += 1
 
 if __name__ == '__main__':
-    input_directory = "/home/andre/kaggle-dsb-2017/data/sample_images/"
+    input_directory = "/media/andre/USB Drive/kaggle/stage1/"
     output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    calc_features(input_directory, output_directory)
+    calc_features(input_directory, output_directory, n_iterations=10, overwrite=False)
 
