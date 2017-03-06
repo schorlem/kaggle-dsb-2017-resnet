@@ -17,6 +17,7 @@ def create_submission(input_directory, output_directory, submission_file, model_
     x = np.array(patients)
 
     pred = clf.predict(x)
+    pred = pred.clip(min=0.)
 
     df['cancer'] = pred
     df.to_csv(output_directory+"submission.csv", index=False)

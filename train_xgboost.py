@@ -25,7 +25,7 @@ def train_xgboost(input_folder, output_folder, labels):
     clf = xgb.XGBRegressor(max_depth=10,
                            n_estimators=1500,
                            min_child_weight=9,
-                           learning_rate=0.05,
+                           learning_rate=0.01,
                            nthread=8,
                            subsample=0.80,
                            colsample_bytree=0.80,
