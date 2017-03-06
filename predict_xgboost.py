@@ -1,11 +1,15 @@
-def create_submission(input_directory, output_directory, submission_file, model_file)():
+import pickle
+import pandas as pd
+import numpy as np
+
+def create_submission(input_directory, output_directory, submission_file, model_file):
     clf = pickle.load(open(model_file, "rb"))
 
     df = pd.read_csv(submission_file)
 
     patients = []
     for id in df['id'].tolist():
-        patient = np.load(input_folder+'%s_features.npy' % str(id))
+        patient = np.load(input_directory+'%s_features.npy' % str(id))
         patient = patient.reshape(patient.shape[0],patient.shape[1])
         patient = np.mean(patient, axis = 0)
         patients.append(patient)

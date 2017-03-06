@@ -39,5 +39,5 @@ def train_xgboost(input_folder, output_folder, labels):
 if __name__ == '__main__':
     input_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
     output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    labels_file = "/home/andre/kaggle-dsb-2017/data/sample_labels.csv"
+    labels_file = "/home/andre/kaggle-dsb-2017/data/stage1_labels.csv"
     train_xgboost(input_directory, output_directory, labels_file)

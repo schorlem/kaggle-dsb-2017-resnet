@@ -1,11 +1,11 @@
+import os
+from glob import glob
 import numpy as np
 import pydicom
-from models.resnet50 import ResNet50
-import os
 import cv2
 import keras.backend as K
 from keras.models import Model
-from glob import glob
+from models.resnet50 import ResNet50
 
 K.set_image_dim_ordering('th')
 
@@ -25,8 +25,10 @@ def get_data_id(path):
     cnt = 0
     dx = 40
     ds = 512
+
     for i in range(0, sample_image.shape[0] - 3, 3):
         tmp = []
+
         for j in range(3):
             img = sample_image[i + j]
             img = 255.0 / np.amax(img) * img
@@ -46,20 +48,21 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
     model = ResNet50(weights='imagenet')
     layer_name = 'avg_pool'
     intermediate_layer_model = Model(input=model.input, output=model.get_layer(layer_name).output)
-
     i = 0
+
     for folder in glob(input_path+'*'):
+
         if i >= n_iterations:
             break
+
         output_basename = os.path.basename(os.path.normpath(folder))
         output_name = output_path + output_basename + "_features"
+
         if not overwrite and os.path.exists(output_name + ".npy"):
             i += 1
             continue
 
-
         batch = get_data_id(folder)
-
         img = np.ndarray([len(batch),3,224,224],dtype=np.float32)
         img = batch
         intermediate_output = intermediate_layer_model.predict(img, batch_size = 20)
@@ -69,5 +72,5 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
 if __name__ == '__main__':
     input_directory = "/media/andre/USB Drive/kaggle/stage1/"
     output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    calc_features(input_directory, output_directory, n_iterations=10, overwrite=False)
+    calc_features(input_directory, output_directory, n_iterations=1600, overwrite=False)
 
