@@ -70,7 +70,7 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
         i += 1
 
 if __name__ == '__main__':
-    input_directory = "/media/andre/USB Drive/kaggle/stage1/"
-    output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
+    #input_directory = "/media/andre/USB Drive/kaggle/stage1/"
+    #output_directory = "/home/andre/kaggle-dsb-2017/data/test/"
     calc_features(input_directory, output_directory, n_iterations=1600, overwrite=False)
 
