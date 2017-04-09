@@ -16,8 +16,9 @@ def create_submission(input_directory, output_directory, submission_file, model_
 
     x = np.array(patients)
 
-    pred = clf.predict(x)
-    pred = pred.clip(min=0.)
+    #pred = clf.predict(x)
+    #pred = pred.clip(min=0.)
+    pred = 1-clf.predict_proba(x)
 
     df['cancer'] = pred
     df.to_csv(output_directory+"submission.csv", index=False)
@@ -25,8 +26,9 @@ def create_submission(input_directory, output_directory, submission_file, model_
 
 
 if __name__ == '__main__':
-    input_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    submission_file = "/home/andre/kaggle-dsb-2017/data/stage1_sample_submission.csv"
+    input_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
+    output_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
+    #submission_file = "/home/andre/kaggle-dsb-2017/data/stage1_sample_submission.csv"
+    submission_file = "/home/andre/kaggle-dsb-2017/data/stage2_sample_submission.csv"
     model_file = "/home/andre/kaggle-dsb-2017/data/resnet_features/pima.pickle.dat"
     create_submission(input_directory, output_directory, submission_file, model_file)

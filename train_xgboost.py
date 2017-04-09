@@ -27,6 +27,7 @@ def train_xgboost(input_folder, output_folder, labels):
 
     trn_x, val_x, trn_y, val_y = train_test_split(x, y, random_state=42, stratify=y, test_size=0.20)
 
+    # learning rate = 0.004 and n_estimator= 505 and seed =4242 for first two submissions
     clf = xgb.XGBRegressor(max_depth=4,
                            n_estimators=1500,
                            min_child_weight=2,
@@ -36,10 +37,10 @@ def train_xgboost(input_folder, output_folder, labels):
                            colsample_bytree=0.80,
                            seed=4242)
 
-    clf.fit(trn_x, trn_y, eval_set=[(val_x, val_y)], verbose=True, eval_metric='logloss', early_stopping_rounds=50)
+    #clf.fit(trn_x, trn_y, eval_set=[(val_x, val_y)], verbose=True, eval_metric='logloss', early_stopping_rounds=50)
 
     clf2 = xgb.XGBRegressor(max_depth=4,
-                           n_estimators=580,
+                           n_estimators=505,
                            min_child_weight=2,
                            learning_rate=0.004,
                            nthread=4,
@@ -49,8 +50,8 @@ def train_xgboost(input_folder, output_folder, labels):
 
     #clf2.fit(x, y, verbose=True, eval_metric='logloss')
 
-    xgb3 = xgb.XGBClassifier(learning_rate=0.005,
-                         n_estimators=580,
+    clf3 = xgb.XGBClassifier(learning_rate=0.005,
+                         n_estimators=403,
                          max_depth=4,
                          min_child_weight=2,
                          gamma=0,
@@ -59,16 +60,17 @@ def train_xgboost(input_folder, output_folder, labels):
                          objective='binary:logistic',
                          nthread=4,
                          scale_pos_weight=1,
-                         seed=4242)
+                         seed=500)
 
-    #xgb3.fit(trn_x, trn_y, eval_set=[(val_x, val_y)], verbose=True, eval_metric='logloss', early_stopping_rounds=50)
+    clf3.fit(trn_x, trn_y, eval_set=[(val_x, val_y)], verbose=True, eval_metric='logloss', early_stopping_rounds=50)
+    #clf3.fit(x, y, verbose=True, eval_metric='logloss')
 
-    pickle.dump(clf, open(output_folder + "pima.pickle.dat", "wb"))
+    pickle.dump(clf3, open(output_folder + "pima.pickle.dat", "wb"))
     return clf
 
 
 if __name__ == '__main__':
     input_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
     output_directory = "/home/andre/kaggle-dsb-2017/data/resnet_features/"
-    labels_file = "/home/andre/kaggle-dsb-2017/data/stage1_labels.csv"
+    labels_file = "/home/andre/kaggle-dsb-2017/data/all_labels.csv"
     train_xgboost(input_directory, output_directory, labels_file)

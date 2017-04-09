@@ -77,7 +77,7 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
 if __name__ == '__main__':
     #input_directory = "/media/andre/USB Drive/kaggle/stage1/"
     #output_directory = "/home/andre/kaggle-dsb-2017/data/test/"
-    input_directory = "/media/andre/USB Drive/kaggle/stage2/"
-    output_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
-    calc_features(input_directory, output_directory, n_iterations=100, overwrite=False)
+    #input_directory = "/media/andre/USB Drive/kaggle/stage2/"
+    #output_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
+    calc_features(input_directory, output_directory, n_iterations=520, overwrite=False)
 
