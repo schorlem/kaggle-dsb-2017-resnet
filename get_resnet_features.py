@@ -9,13 +9,16 @@ from models.resnet50 import ResNet50
 
 K.set_image_dim_ordering('th')
 
+
 def get_3d_data(path):
     slices = [pydicom.read_file(path + '/' + s) for s in os.listdir(path)]
     slices.sort(key=lambda x: int(x.InstanceNumber))
     return np.stack([s.pixel_array for s in slices])
 
+
 def zero_centering(batch):
     pass #TODO add zero centering for all three channels
+
 
 def get_data_id(path):
     sample_image = get_3d_data(path)
@@ -51,6 +54,7 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
     i = 0
 
     for folder in glob(input_path+'*'):
+        print(i)
 
         if i >= n_iterations:
             break
@@ -69,8 +73,11 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
         np.save(output_name, intermediate_output)
         i += 1
 
+
 if __name__ == '__main__':
     #input_directory = "/media/andre/USB Drive/kaggle/stage1/"
     #output_directory = "/home/andre/kaggle-dsb-2017/data/test/"
-    calc_features(input_directory, output_directory, n_iterations=1600, overwrite=False)
+    input_directory = "/media/andre/USB Drive/kaggle/stage2/"
+    output_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
+    calc_features(input_directory, output_directory, n_iterations=100, overwrite=False)
 
