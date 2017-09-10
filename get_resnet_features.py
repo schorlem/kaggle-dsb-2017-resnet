@@ -17,7 +17,7 @@ def get_3d_data(path):
 
 
 def zero_centering(batch):
-    pass #TODO add zero centering for all three channels
+    pass  # TODO add zero centering for all three channels
 
 
 def get_data_id(path):
@@ -25,7 +25,6 @@ def get_data_id(path):
     sample_image[sample_image == -2000] = 0
 
     batch = []
-    cnt = 0
     dx = 40
     ds = 512
 
@@ -67,17 +66,14 @@ def calc_features(input_path, output_path, n_iterations=100, overwrite=True):
             continue
 
         batch = get_data_id(folder)
-        img = np.ndarray([len(batch),3,224,224],dtype=np.float32)
+        img = np.ndarray([len(batch), 3, 224, 224],dtype=np.float32)
         img = batch
-        intermediate_output = intermediate_layer_model.predict(img, batch_size = 20)
+        intermediate_output = intermediate_layer_model.predict(img, batch_size=20)
         np.save(output_name, intermediate_output)
         i += 1
 
 
 if __name__ == '__main__':
-    #input_directory = "/media/andre/USB Drive/kaggle/stage1/"
-    #output_directory = "/home/andre/kaggle-dsb-2017/data/test/"
-    #input_directory = "/media/andre/USB Drive/kaggle/stage2/"
-    #output_directory = "/home/andre/kaggle-dsb-2017/data/stage2_resnet_features/"
+    input_directory = "path_to_input_directory"
+    output_directory = "path_to_project/data/stage2_resnet_features/"
     calc_features(input_directory, output_directory, n_iterations=520, overwrite=False)
-

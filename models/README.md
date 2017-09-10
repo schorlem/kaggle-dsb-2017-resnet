@@ -1,4 +1,5 @@
 # Trained image classification models for Keras
+This repository is a copy of [https://github.com/fchollet/deep-learning-models](https://github.com/fchollet/deep-learning-models).
 
 This repository contains code for the following Keras models:
 

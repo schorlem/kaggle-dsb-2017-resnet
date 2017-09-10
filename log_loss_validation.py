@@ -11,7 +11,8 @@ def validate_log_loss(y_true_path, y_pred_path):
     loss = log_loss(y_true, y_pred)
     print(loss)
 
+
 if __name__ == '__main__':
-    y_true_file = "/home/andre/kaggle-dsb-2017/data/submission_fin/submissions_fin.csv"
-    y_pred_file = "/home/andre/kaggle-dsb-2017/data/resnet_features/submission.csv"
+    y_true_file = "path_to_project/data/submission_fin/submissions_fin.csv"
+    y_pred_file = "path_to_project/data/resnet_features/submission.csv"
     validate_log_loss(y_true_file, y_pred_file)
